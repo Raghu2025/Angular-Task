@@ -1,0 +1,25 @@
+ <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="w-2/5 max-w-xs min-w-max  bg-white shadow-lg rounded-lg px-3 py-2">
+      <div class="flex flex-col justify-center items-center">
+        <h1 class="text-center text-2xl font-light mb-5">Login</h1>
+        <form class="w-full">
+          <div class="my-3">
+            <label for="email" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Email</label>
+            <input type="text" class="appearance-none block w-full text-gray-700 border  rounded py-2 px-3 mb-3 leading-tight focus:outline-none" id="email">
+          </div>
+          <div class="my-3">
+            <label for="password" class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Password</label>
+            <input type="password" class="appearance-none block w-full text-gray-700 border  rounded py-2 px-3 mb-3 leading-tight focus:outline-none" id="password">
+          </div>
+          <div class="text-center" *ngIf="submitted">
+            <p class="text-red-500 text-xs italic">Please choose a value.</p>
+          </div>
+          <div class="w-full flex justify-center items-center mt-4">
+            <button class="grow bg-green-600 hover:bg-green-600 text-white font-medium rounded-md px-3 py-1" 
+            (click)="submit()">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

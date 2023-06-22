@@ -1,0 +1,28 @@
+<div id="modalContainer" class="fixed backdrop-brightness-50 top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0  max-h-full flex justify-center">
+    <div class="relative w-full max-w-md max-h-full">
+
+        <div class="relative bg-white rounded-lg drop-shadow-2xl">
+            <button (click)="close()" type="button" class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:text-gray-700 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center">
+                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" ><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+
+            <div class="w-full px-6 py-6 lg:px-8">
+                <div class="mb-4 text-xl font-medium text-gray-900">
+                <ng-content select=".modal-header" class="">
+
+
+                </ng-content>
+                <hr class="h-px my-8 border-0 bg-slate-400">
+
+                </div>
+                <ng-content select=".modal-body"></ng-content>
+                <div>
+                    <ng-content select=".modal-footer"></ng-content>
+                </div>
+
+            </div>
+          
+        </div>
+    </div>
+</div> 

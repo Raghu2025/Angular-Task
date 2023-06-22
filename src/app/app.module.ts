@@ -3,14 +3,34 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { RoleComponent } from './role/role.component';
+import { LoginComponent } from './login/login.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { ItemComponent } from './item/item.component';
+import { SaleComponent } from './sale/sale.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AnalyticComponent } from './analytic/analytic.component';
+import { UserFormComponent } from './user/component/user-form/user-form.component';
+import { ModalModule } from './modal/modal.module';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RoleComponent,
+    LoginComponent,
+    DashboardComponent,
+    UserComponent,
+    ItemComponent,
+    SaleComponent,
+    AnalyticComponent,
+    UserFormComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReactiveFormsModule,
+    ModalModule
   ],
   providers: [],
   bootstrap: [AppComponent]
