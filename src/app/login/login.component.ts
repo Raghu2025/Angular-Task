@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ServerService } from '../server/server.service';
+import { ResponseFromServer } from '../model/response.interface';
+import { User } from '../model/user.interface';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -10,7 +14,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class LoginComponent implements OnInit {
 loginForm:FormGroup = new FormGroup({})
 submitted:Boolean = false
-constructor(private formBuilder:FormBuilder) { }
+error = {
+  status:false,
+  message:""
+}
+constructor(private formBuilder:FormBuilder,private server:ServerService,private router:Router) { }
 
   ngOnInit(): void {
   this.loginFormInit()
@@ -20,9 +28,10 @@ constructor(private formBuilder:FormBuilder) { }
 loginFormInit(){
 this.loginForm = this.formBuilder.group({
   email:['',[
-    Validators.required
+    Validators.required,
+    Validators.email
   ]],
-  passowrd:['',[
+  password:['',[
     Validators.required
   ]]
 })
@@ -30,6 +39,43 @@ this.loginForm = this.formBuilder.group({
 
 submit(){
  this.submitted = true
+ console.log(this.loginForm)
+ if(this.loginForm.invalid) return
+ this.server.login(this.loginForm.value).subscribe((data:ResponseFromServer<User>)=>{
+  if(data.success){
+    console.log(data.data,":::::::")
+     localStorage.setItem("Role",data.data.role)
+     localStorage.setItem("Name",data.data.name)
+     localStorage.setItem("id",data.data.id || "")
+     this.redirect(data.data.role)
+  }
+  else{
+    this.error = {
+      status:true,
+      message:data.message as string
+    }
+
+  }
+ })
+}
+
+redirect(role:string){
+let route = ""
+switch(role){
+  case "admin":
+  route = "/dashboard/user"
+  break;
+  case "supervisor":
+  route = "/dashboard/analytic"
+  break;
+  case "sale":
+  route = "/dashboard/sale"
+  break;
+  default:
+  break;
+}
+this.router.navigateByUrl(route)
+
 }
 
 resetForm(){

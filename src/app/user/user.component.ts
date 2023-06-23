@@ -28,6 +28,7 @@ subscription:Subscription[] = new Array()
          if(typeof(di)==="string"){
           return JSON.parse(di)
          }
+         return di
       })
       console.log(this.Users)
     })
@@ -46,6 +47,7 @@ subscription:Subscription[] = new Array()
     form.instance.userData.subscribe((data:User)=>{
       this.subscription.push(this.server.saveData("users",data).subscribe((data)=>{
           this.container.clear()
+          this.getUsers()
         }))
   
     })
@@ -56,12 +58,13 @@ subscription:Subscription[] = new Array()
 
   }
 
-  updater(){
+  updater(data:User){
     this.container?.clear()
     const form = this.container?.createComponent(UserFormComponent)
     form.instance.formOptions = {
       type:"update",
-      name:"User"
+      name:"User",
+      data:data
     }
 
    this.subscription.push(

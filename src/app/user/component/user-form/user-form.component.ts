@@ -1,7 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { Role } from 'src/app/model/role.interface';
 import { User } from 'src/app/model/user.interface';
-import { userFormOption } from 'src/app/model/userFormConfig.interface';
+import { FormOption } from 'src/app/model/FormConfig.interface';
 import { ServerService } from 'src/app/server/server.service';
 
 @Component({
@@ -10,24 +12,40 @@ import { ServerService } from 'src/app/server/server.service';
   styleUrls: ['./user-form.component.css']
 })
 export class UserFormComponent implements OnInit {
-@Input() formOptions!:userFormOption
+@Input() formOptions!:FormOption<User>
 @Output() userData:EventEmitter<User> = new EventEmitter()
 userForm:FormGroup = new FormGroup({})
 submitted:boolean = false
+subscription:Subscription[] = []
+Roles:Role[] = []
   constructor(
-    private formBuilder:FormBuilder
+    private formBuilder:FormBuilder,
+    private server:ServerService
   ) { }
 
 
   ngOnInit(): void {
     this.formInit()
+    this.getRole()
     if(this.formOptions){
     if(this.formOptions.hasOwnProperty('type') && this.formOptions.type ==="update"){
       this.patchValue(this.formOptions.data as User)
     }
     }
   }
-
+  getRole(){
+    this.subscription.push(
+      this.server.getData('roles').subscribe((data)=>{
+        this.Roles = data.map((di:string)=>{
+           if(typeof(di)==="string"){
+            return JSON.parse(di)
+           }
+           return di
+        })
+      })
+    )
+   console.log(this.Roles)
+    }
 
 formInit(){
   this.userForm = this.formBuilder.group({
@@ -64,8 +82,9 @@ this.userForm.reset()
 submit(){
 this.submitted = true
 if(this.userForm.invalid) return
-this.reset()
 this.userData.emit(this.userForm.value)
+this.reset()
+
 }
 
 

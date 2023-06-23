@@ -13,6 +13,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { AnalyticComponent } from './analytic/analytic.component';
 import { UserFormComponent } from './user/component/user-form/user-form.component';
 import { ModalModule } from './modal/modal.module';
+import { RoleFormComponent } from './role/components/role-form/role-form.component';
+import { ItemFormComponent } from './item/components/item-form/item-form.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { ModalModule } from './modal/modal.module';
     ItemComponent,
     SaleComponent,
     AnalyticComponent,
-    UserFormComponent
+    UserFormComponent,
+    RoleFormComponent,
+    ItemFormComponent
   ],
   imports: [
     BrowserModule,

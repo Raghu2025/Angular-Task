@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { Item } from '../model/item.interface';
+import { Subscription } from 'rxjs';
+import { ServerService } from '../server/server.service';
+import { ItemFormComponent } from './components/item-form/item-form.component';
 
 @Component({
   selector: 'app-item',
@@ -6,10 +10,75 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./item.component.css']
 })
 export class ItemComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
+  @ViewChild("componentContainer", { read: ViewContainerRef }) container!:ViewContainerRef 
+  Items:Item[] = new Array()
+  subscription:Subscription[] = new Array()
+    constructor(
+      private server:ServerService
+    ) { }
+  
+    ngOnInit(): void {
+      this.getItems()
+    }
+  
+    getItems(){
+    this.subscription.push(
+      this.server.getData('items').subscribe((data)=>{
+        this.Items = data.map((di:string)=>{
+           if(typeof(di)==="string"){
+            return JSON.parse(di)
+           }
+           return di
+        })
+        console.log(this.Items)
+      })
+    )
+    }
+  
+    openModal(){
+      this.container?.clear()
+      const form = this.container?.createComponent(ItemFormComponent)
+      form.instance.formOptions = {
+        type:"add",
+        name:"Item"
+      }
+  
+     this.subscription.push(
+      form.instance.ItemData.subscribe((data:Item)=>{
+        this.subscription.push(this.server.saveData("items",data).subscribe((data)=>{
+            this.container.clear()
+            this.getItems()
+          }))
+    
+      })
+      )
+    }
+  
+    deleter(){
+  
+    }
+  
+    updater(data:Item){
+      this.container?.clear()
+      const form = this.container?.createComponent(ItemFormComponent)
+      form.instance.formOptions = {
+        type:"update",
+        name:"Item",
+        data:data
+      }
+  
+     this.subscription.push(
+      form.instance.ItemData.subscribe((data:Item)=>{
+        // this.subscription.push(this.server.saveData("users",data).subscribe((data)=>{
+        //     this.container.clear()
+        //   }))
+    
+      })
+      ) 
+    }
+  
+    ngOnDestroy(){
+     this.container.clear()
+     this.subscription.forEach(sub => sub.unsubscribe())
+    }
 }
