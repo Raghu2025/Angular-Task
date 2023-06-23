@@ -47,7 +47,6 @@ export class ServerService {
   localStorage.setItem('roles',JSON.stringify(role))
   }
 
-
    getData(name:string): Observable<any> {
     this.loadingS.setLoading(true)
      const data = JSON.parse(localStorage.getItem(name) as string) || []
@@ -71,7 +70,7 @@ export class ServerService {
 
    login(body:User): Observable<any>{
     this.loadingS.setLoading(true)
-    let response = {}
+    let response:{success:boolean,message?:string,data?:User} = {success:false,message:"Email and password doesnot match"}
     const Users = JSON.parse(localStorage.getItem("users") as string) || []
      Users.forEach((data:string | User) => {
       let da = typeof(data)==="string"?JSON.parse(data):data
@@ -79,12 +78,6 @@ export class ServerService {
         response = {
           success:true,
           data:da
-        }
-      }
-      else{
-        response = {
-          success:false,
-          message:"Email and password doesnot match"
         }
       }
     });
