@@ -11,7 +11,14 @@ import { ItemFormComponent } from '../item/components/item-form/item-form.compon
 })
 export class SaleComponent implements OnInit {
 @ViewChild("componentContainer", { read: ViewContainerRef }) container!:ViewContainerRef 
+previousValue:Item[] = []
 subscription:Subscription[] = []
+
+searchBtn = {
+  click:false,
+  query:""
+}
+
 Items:Item[] = []
   constructor(private server:ServerService) { }
 
@@ -28,6 +35,7 @@ Items:Item[] = []
            }
            return di
         })
+        this.previousValue = new Array(...this.Items)
       })
     )
     }
@@ -52,10 +60,27 @@ Items:Item[] = []
       ) 
     }
 
-    ngOnDestroy(){
+  ngOnDestroy(){
       this.container.clear()
       this.subscription.forEach(sub => sub.unsubscribe())
-     }
+    }
+
+  searchItem() {
+    const searchQuery = this.searchBtn.query
+    if(!searchQuery){return}
+    this.searchBtn.click = true
+    this.Items = this.previousValue.filter(item =>
+        item.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
   
+      console.log('Search Results:',this.Items);
+    }
+  
+resetSearch(){
+  this.searchBtn.click = false
+  this.searchBtn.query = ""
+  this.Items = new Array(...this.previousValue)
+
+}
 
 }

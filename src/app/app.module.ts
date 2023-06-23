@@ -9,7 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UserComponent } from './user/user.component';
 import { ItemComponent } from './item/item.component';
 import { SaleComponent } from './sale/sale.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AnalyticComponent } from './analytic/analytic.component';
 import { UserFormComponent } from './user/component/user-form/user-form.component';
 import { ModalModule } from './modal/modal.module';
@@ -34,7 +34,8 @@ import { ItemFormComponent } from './item/components/item-form/item-form.compone
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    ModalModule
+    ModalModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
