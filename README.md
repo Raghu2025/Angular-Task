@@ -1,3 +1,11 @@
+# First time credential
+It'll create a superuser login
+email:superuser@gmail.com
+password:superuser
+
+# server part is done inside server folder
+localstorage is used as instructed
+
 # AngularTask
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.2.
