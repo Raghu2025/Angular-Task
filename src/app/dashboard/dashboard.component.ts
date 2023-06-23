@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 name:string = ""
+
   constructor(private router:Router) { }
 
   ngOnInit(): void {
@@ -38,5 +39,6 @@ name:string = ""
     return false
   }
   }
+
 
 }
