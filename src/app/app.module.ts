@@ -15,6 +15,7 @@ import { UserFormComponent } from './user/component/user-form/user-form.componen
 import { ModalModule } from './modal/modal.module';
 import { RoleFormComponent } from './role/components/role-form/role-form.component';
 import { ItemFormComponent } from './item/components/item-form/item-form.component';
+import { SaleFormComponent } from './sale/sale-form/sale-form.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { ItemFormComponent } from './item/components/item-form/item-form.compone
     AnalyticComponent,
     UserFormComponent,
     RoleFormComponent,
-    ItemFormComponent
+    ItemFormComponent,
+    SaleFormComponent
   ],
   imports: [
     BrowserModule,

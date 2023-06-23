@@ -3,6 +3,8 @@ import { Observable, delay, of, tap } from 'rxjs';
 import { User } from '../model/user.interface';
 import { ResponseFromServer } from '../model/response.interface';
 import { LoadingService } from '../service/loading.service';
+import { Sale } from '../model/sale.interface';
+import { Item } from '../model/item.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +12,6 @@ import { LoadingService } from '../service/loading.service';
 export class ServerService {
 
   constructor(private loadingS:LoadingService) {
-    console.log(this.generateUUID())
    }
   private getRandomDelay(): number {
     return Math.floor(Math.random() * 2000) + 500;
@@ -122,6 +123,73 @@ export class ServerService {
      )
    }
 
+   saveSale(name:string,body:Sale):Observable<any> {
+    this.loadingS.setLoading(true)
+     const response = {success:true}
+     const bodyData = {...body,id:this.generateUUID(),createdDate:new Date().toISOString()} 
+     const previousData = JSON.parse(localStorage.getItem(name) as string) || []
+     previousData.push(bodyData)
+     localStorage.setItem(name,JSON.stringify(previousData))
+     const Items = JSON.parse(localStorage.getItem("items") as string) || []
+    //  subtracting the quantity form items
+     Items.forEach((data:Item,index:number)=>{
+      const dd =  typeof(data)==="string"?JSON.parse(data):data
+      if(dd.id===body.itemId){
+        Items[index].quantity = Items[index].quantity - body.buy
+      }
+      localStorage.setItem('items',JSON.stringify(Items))
+
+     })
+
+     return of({...response}).pipe(delay(this.getRandomDelay())).pipe(
+      tap((data)=>this.loadingS.setLoading(false))
+     )
+   }
+
+   getAnalytical():Observable<any>{
+    this.loadingS.setLoading(true)
+    const response = {success:true}
+    const Sale = JSON.parse(localStorage.getItem('sales') as string) || []
+// Total Sale
+    let total = Sale.reduce((total:number, item:Sale) => total + (item.buy || 0), 0);
+
+
+// Total Today Sale
+    const today = new Date().toLocaleDateString();
+    const totalToday = Sale.reduce((total:number, item:Sale) => {
+  const itemDate = new Date(item.createdDate).toLocaleDateString();
+  return itemDate === today ? total + (item.buy || 0) : total;
+}, 0);
+
+// popularProduct
+const productCountMap:{[key:string]: number} = {};
+Sale.forEach((item:Sale) => {
+  const name = item.name;
+  if (productCountMap[name]) {
+    productCountMap[name] += item.buy || 0;
+  } else {
+    productCountMap[name] = item.buy || 0;
+  }
+});
+
+let popularProduct = null;
+let maxBuyCount = 0;
+for (const pro in productCountMap) {
+  if (productCountMap[pro] > maxBuyCount) {
+    popularProduct = pro;
+    maxBuyCount = productCountMap[pro];
+  }
+}
+const pProduct = {
+  name:popularProduct,
+  buy:maxBuyCount
+}
+
+
+     return of({...response,total,totalToday,data:[pProduct]}).pipe(delay(this.getRandomDelay())).pipe(
+      tap((data)=>this.loadingS.setLoading(false))
+     )
+   }
   //  unique<T>(fields:Array<string>,name:string){
   //   console.log(crypto.randomUUID())
   // //  let collection = {}

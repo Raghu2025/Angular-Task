@@ -6,14 +6,14 @@
         <form  [formGroup]="ItemForm" (ngSubmit)="submit()">
             <div class="mb-6">
                 <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Name</label>
-                <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " formControlName="name" placeholder="" required>
+                <input type="text" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" formControlName="name" placeholder="" required>
                 <div class="text-center" *ngIf="submitted && ItemForm.get('name')?.invalid">
                     <p class="text-red-500 text-xs italic">Name is required</p>
                   </div>
             </div> 
             <div class="mb-6">
                 <label for="number" class="block mb-2 text-sm font-medium text-gray-900   ">Quantity</label>
-                <input type="number" id="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " formControlName="quantity" placeholder="" required>
+                <input min="0" type="number" id="number" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 " formControlName="quantity" placeholder="" required>
                 <div class="text-center" *ngIf="submitted && ItemForm.get('quantity')?.invalid">
                     <p class="text-red-500 text-xs italic">Quantity is required</p>
                   </div>

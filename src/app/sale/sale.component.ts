@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { ServerService } from '../server/server.service';
 import { Item } from '../model/item.interface';
 import { ItemFormComponent } from '../item/components/item-form/item-form.component';
+import { SaleFormComponent } from './sale-form/sale-form.component';
+import { Sale } from '../model/sale.interface';
 
 @Component({
   selector: 'app-sale',
@@ -72,8 +74,27 @@ Items:Item[] = []
     this.Items = this.previousValue.filter(item =>
         item.name.toLowerCase().includes(searchQuery.toLowerCase())
       );
+    }
+
+    sale(data:Item){
+      this.container?.clear()
+      const form = this.container?.createComponent(SaleFormComponent)
+      form.instance.formOptions = {
+        type:"add",
+        name:"sale",
+        data:data
+      }
   
-      console.log('Search Results:',this.Items);
+     this.subscription.push(
+      form.instance.SaleData.subscribe((data:Sale)=>{
+        console.log("hhhhhh",data)
+        this.subscription.push(this.server.saveSale("sales",data).subscribe((data)=>{
+            this.container.clear()
+            this.getItems()
+          }))
+    
+      })
+      ) 
     }
   
 resetSearch(){
