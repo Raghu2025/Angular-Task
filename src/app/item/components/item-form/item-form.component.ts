@@ -57,7 +57,14 @@ export class ItemFormComponent implements OnInit {
   submit(){
   this.submitted = true
   if(this.ItemForm.invalid) return
-  this.ItemData.emit(this.ItemForm.value)
+  let value =this.ItemForm.value
+  if(this.formOptions.type==="update"){
+    value = {
+      ...this.formOptions.data,
+      ...this.ItemForm.value
+    }
+  }
+  this.ItemData.emit(value)
   this.reset()
   
   }

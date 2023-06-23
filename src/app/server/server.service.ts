@@ -44,7 +44,7 @@ export class ServerService {
   
   ]
   localStorage.setItem('users',JSON.stringify(user))
-  localStorage.setItem('roles',JSON.stringify(user))
+  localStorage.setItem('roles',JSON.stringify(role))
   }
 
 
@@ -57,8 +57,10 @@ export class ServerService {
    }
    
    saveData<T>(name:string,body:T):Observable<any> {
+    this.loadingS.setLoading(true)
      const response = {success:true}
-     const bodyData = typeof(body)==="string"?body:JSON.stringify(body)
+    //  const bodyData = typeof(body)==="string"?body:JSON.stringify(body)
+    const bodyData = {...body,id:this.generateUUID()} 
      const previousData = JSON.parse(localStorage.getItem(name) as string) || []
      previousData.push(bodyData)
      localStorage.setItem(name,JSON.stringify(previousData))
@@ -68,6 +70,7 @@ export class ServerService {
    }
 
    login(body:User): Observable<any>{
+    this.loadingS.setLoading(true)
     let response = {}
     const Users = JSON.parse(localStorage.getItem("users") as string) || []
      Users.forEach((data:string | User) => {
@@ -90,14 +93,50 @@ export class ServerService {
      )
    }
 
-   unique<T>(fields:Array<string>,name:string){
-    console.log(crypto.randomUUID())
-  //  let collection = {}
-  //  data.forEach((data)=>{
-    
-  //  })
-
+   update<T>(id:string,name:string,body:T):Observable<any>{
+    this.loadingS.setLoading(true)
+    console.log(id)
+    let response = {success:true}
+    let previousdata = JSON.parse(localStorage.getItem(name) as string) || []
+     previousdata.forEach((data:T,index:number)=>{
+      const dd =  typeof(data)==="string"?JSON.parse(data):data
+      if(dd.id===id){
+        previousdata[index] = {
+          id:id,
+          ...body
+        }
+      }
+    })
+    localStorage.setItem(name,JSON.stringify(previousdata))
+    return of({...response}).pipe(delay(this.getRandomDelay())).pipe(
+      tap((data)=>this.loadingS.setLoading(false))
+     )
    }
+   
+   delete<T>(id:string,name:string):Observable<any>{
+    this.loadingS.setLoading(true)
+    let response = {success:true}
+    let previousdata = JSON.parse(localStorage.getItem(name) as string) || []
+     previousdata.forEach((data:T,index:number)=>{
+      const dd =  typeof(data)==="string"?JSON.parse(data):data
+      if(dd.id === id){
+           previousdata.splice(index, 1);
+      }
+    })
+    localStorage.setItem(name,JSON.stringify(previousdata))
+    return of({...response}).pipe(delay(this.getRandomDelay())).pipe(
+      tap((data)=>this.loadingS.setLoading(false))
+     )
+   }
+
+  //  unique<T>(fields:Array<string>,name:string){
+  //   console.log(crypto.randomUUID())
+  // //  let collection = {}
+  // //  data.forEach((data)=>{
+    
+  // //  })
+
+  //  }
 
   generateUUID() {
     var digits = "0123456789abcdef";

@@ -50,7 +50,14 @@ export class RoleFormComponent implements OnInit {
   submit(){
   this.submitted = true
   if(this.roleForm.invalid) return
-  this.roleData.emit(this.roleForm.value)
+  let value =this.roleForm.value
+  if(this.formOptions.type==="update"){
+    value = {
+      ...this.formOptions.data,
+      ...this.roleForm.value
+    }
+  }
+  this.roleData.emit(value)
   this.submitted = false
   this.reset()
 

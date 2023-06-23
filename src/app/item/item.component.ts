@@ -54,9 +54,13 @@ export class ItemComponent implements OnInit {
       )
     }
   
-    deleter(){
-  
+    deleter(id?:string){
+      this.subscription.push(this.server.delete(id as string,"items").subscribe((data)=>{
+         this.getItems()
+          this.container.clear()
+      }))
     }
+  
   
     updater(data:Item){
       this.container?.clear()
@@ -69,9 +73,10 @@ export class ItemComponent implements OnInit {
   
      this.subscription.push(
       form.instance.ItemData.subscribe((data:Item)=>{
-        // this.subscription.push(this.server.saveData("users",data).subscribe((data)=>{
-        //     this.container.clear()
-        //   }))
+        this.subscription.push(this.server.update(data.id as string,"items",data).subscribe((data)=>{
+            this.container.clear()
+            this.getItems()
+          }))
     
       })
       ) 

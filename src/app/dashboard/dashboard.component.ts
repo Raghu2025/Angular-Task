@@ -28,4 +28,15 @@ name:string = ""
     this.name = Name?.substring(0,2) || ""
   }
 
+  allowedTo(...role:Array<string>){
+  const roleOf = localStorage.getItem('Role') || ""
+  const allowedRole = [...role]
+  if(allowedRole.includes(roleOf)){
+   return true
+  }
+  else{
+    return false
+  }
+  }
+
 }

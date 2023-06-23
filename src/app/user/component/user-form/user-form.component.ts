@@ -82,8 +82,15 @@ this.userForm.reset()
 submit(){
 this.submitted = true
 if(this.userForm.invalid) return
-this.userData.emit(this.userForm.value)
-this.reset()
+let value =this.userForm.value
+if(this.formOptions.type==="update"){
+  value = {
+    ...this.formOptions.data,
+    ...this.userForm.value
+  }
+}
+this.userData.emit(value)
+// this.reset()
 
 }
 

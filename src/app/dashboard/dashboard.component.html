@@ -30,32 +30,32 @@
   <aside id="logo-sidebar" class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 border-r border-gray-200" aria-label="Sidebar">
      <div class="h-full px-3 pb-4 overflow-y-auto bg-white ">
         <ul class="space-y-2 font-medium">
-           <li>
+           <li *ngIf="allowedTo('admin','supervisor')">
               <a routerLink="analytic"  routerLinkActive="bg-gray-100" class="flex items-center p-2 text-gray-900  hover:bg-gray-100 rounded-lg">
                 <img class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900" src="assets/icons/dashboard.png">
                  <span class="ml-3">Dashboard</span>
               </a>
            </li>
-           <li  >
+           <li *ngIf="allowedTo('admin')">
               <a routerLink="role" routerLinkActive="bg-gray-100" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100 ">
                 <img class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900" src="assets/icons/role.png">
                  <span class="flex-1 ml-3 whitespace-nowrap">Role</span>
               </a>
            </li>
 
-           <li>
+           <li *ngIf="allowedTo('admin')">
               <a routerLink="user" routerLinkActive="bg-gray-100" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100">
                 <img class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900" src="assets/icons/user.png">
                  <span class="flex-1 ml-3 whitespace-nowrap">Users</span>
               </a>
            </li>
-           <li>
+           <li *ngIf="allowedTo('admin','supervisor')">
               <a routerLink="item" routerLinkActive="bg-gray-100" class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100">
                 <img class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900" src="assets/icons/add.png">
                  <span class="flex-1 ml-3 whitespace-nowrap">Items</span>
               </a>
            </li>
-           <li>
+           <li *ngIf="allowedTo('admin','supervisor','sale')">
             <a routerLink="sale" routerLinkActive="bg-gray-100"  class="flex items-center p-2 text-gray-900 rounded-lg  hover:bg-gray-100">
               <img class="flex-shrink-0 w-6 h-6 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900" src="assets/icons/sale.png">
                <span class="flex-1 ml-3 whitespace-nowrap">Sale</span>

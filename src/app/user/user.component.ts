@@ -46,7 +46,9 @@ subscription:Subscription[] = new Array()
    this.subscription.push(
     form.instance.userData.subscribe((data:User)=>{
       this.subscription.push(this.server.saveData("users",data).subscribe((data)=>{
+        form.instance.reset()
           this.container.clear()
+
           this.getUsers()
         }))
   
@@ -54,8 +56,11 @@ subscription:Subscription[] = new Array()
     )
   }
 
-  deleter(){
-
+  deleter(id?:string){
+    this.subscription.push(this.server.delete(id as string,"users").subscribe((data)=>{
+       this.getUsers()
+        this.container.clear()
+    }))
   }
 
   updater(data:User){
@@ -69,9 +74,11 @@ subscription:Subscription[] = new Array()
 
    this.subscription.push(
     form.instance.userData.subscribe((data:User)=>{
-      // this.subscription.push(this.server.saveData("users",data).subscribe((data)=>{
-      //     this.container.clear()
-      //   }))
+      this.subscription.push(this.server.update(data.id as string,"users",data).subscribe((data)=>{
+          this.container.clear()
+          form.instance.reset()
+          this.getUsers()
+        }))
   
     })
     ) 

@@ -61,8 +61,11 @@ export class RoleComponent implements OnInit {
       )
     }
   
-  deleter(){
-  
+  deleter(id:string){
+  this.subscription.push(this.server.delete(id,"roles").subscribe((data)=>{
+      this.container.clear()
+      this.getRole()
+  }))
   }
   
     updater(data:Role){
@@ -73,14 +76,16 @@ export class RoleComponent implements OnInit {
         name:"Role",
         data:data
       }
-    //  this.subscription.push(
-    //   form.instance.userData.subscribe((data:Role)=>{
-    //     // this.subscription.push(this.server.saveData("users",data).subscribe((data)=>{
-    //     //     this.container.clear()
-    //     //   }))
+     this.subscription.push(
+      form.instance.roleData.subscribe((data:Role)=>{
+        console.log(data,":::::::::")
+        this.subscription.push(this.server.update(data.id,"roles",data).subscribe((data)=>{
+            this.container.clear()
+            this.getRole()
+          }))
     
-    //   })
-    //   ) 
+      })
+      ) 
     }
   
     ngOnDestroy(){
