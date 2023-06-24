@@ -65,6 +65,7 @@ export class ItemFormComponent implements OnInit {
     }
   }
   this.ItemData.emit(value)
+  this.submitted = false
   this.reset()
   
   }

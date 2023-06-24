@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { Role } from 'src/app/model/role.interface';
 import { User } from 'src/app/model/user.interface';
@@ -17,6 +17,10 @@ export class UserFormComponent implements OnInit {
 userForm:FormGroup = new FormGroup({})
 submitted:boolean = false
 subscription:Subscription[] = []
+error={
+status:false,
+message:""
+}
 Roles:Role[] = []
   constructor(
     private formBuilder:FormBuilder,
@@ -82,6 +86,7 @@ this.userForm.reset()
 submit(){
 this.submitted = true
 if(this.userForm.invalid) return
+if(this.userForm.value.password !== this.userForm.value.confirmPassword) return
 let value =this.userForm.value
 if(this.formOptions.type==="update"){
   value = {
@@ -90,9 +95,11 @@ if(this.formOptions.type==="update"){
   }
 }
 this.userData.emit(value)
+this.submitted = false
 // this.reset()
 
 }
 
 
 }
+

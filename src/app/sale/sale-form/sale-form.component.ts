@@ -74,6 +74,7 @@ export class SaleFormComponent implements OnInit {
     }
   }
   this.SaleData.emit(value)
+  this.submitted = false
   
   }
 }
